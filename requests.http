@@ -1,0 +1,41 @@
+### VARIABLES
+@baseUrl = http://localhost:8080/api
+
+### ============================================================================
+### RECURSO: PRODUCTOS
+### ============================================================================
+
+### [Éxito] Obtener catálogo de productos
+GET {{baseUrl}}/productos?limit=5&skip=0
+Accept: application/json
+
+###
+
+### [Error] Obtener un producto que no existe (404 Not Found)
+GET {{baseUrl}}/productos/999999
+Accept: application/json
+
+
+### ============================================================================
+### RECURSO: FAVORITOS
+### ============================================================================
+
+### [Éxito] Crear un nuevo favorito (201 Created)
+POST {{baseUrl}}/favoritos
+Content-Type: application/json
+
+{
+  "productoId": 1,
+  "notaPersonal": "Este perfume me encantó, recordar comprarlo en oferta."
+}
+
+###
+
+### [Error] Crear un favorito con datos inválidos (400 Bad Request)
+POST {{baseUrl}}/favoritos
+Content-Type: application/json
+
+{
+  "productoId": null,
+  "notaPersonal": ""
+}
