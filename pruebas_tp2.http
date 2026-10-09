@@ -1,0 +1,57 @@
+### Crear lista - Éxito (201)
+POST http://localhost:8080/api/listas
+Content-Type: application/json
+
+{
+  "nombre": "Mis compras"
+}
+
+### Crear lista - Error validación (400)
+POST http://localhost:8080/api/listas
+Content-Type: application/json
+
+{
+  "nombre": ""
+}
+
+### Listar listas - Éxito (200)
+GET http://localhost:8080/api/listas
+
+### Obtener una lista - Éxito (200)
+GET http://localhost:8080/api/listas/1
+
+### Obtener una lista - Error No encontrada (404)
+GET http://localhost:8080/api/listas/999
+
+### Crear favorito en lista (Asumiendo que creaste un favorito en lista 1)
+POST http://localhost:8080/api/favoritos
+Content-Type: application/json
+
+{
+  "productoId": 1,
+  "nota": "Quiero comprar esto",
+  "listaId": 1
+}
+
+### Listar favoritos de una lista - Éxito (200)
+GET http://localhost:8080/api/listas/1/favoritos
+
+### Eliminar lista con favoritos - Error Conflict (409)
+DELETE http://localhost:8080/api/listas/1
+
+### Mover favoritos - Éxito (204)
+# (Asumiendo que existe una lista origen 1 y creamos una destino 2)
+# Primero crear lista destino:
+# POST http://localhost:8080/api/listas
+# { "nombre": "Comprados" }
+POST http://localhost:8080/api/listas/1/mover-favoritos
+Content-Type: application/json
+
+2
+
+### Eliminar una lista vacía - Éxito (204)
+# Si movimos los favoritos a la lista 2 y se borró la 1, borremos la 2 si la vaciamos
+# Pero como la 2 ahora tiene favoritos, borremos otra lista que creemos vacía:
+# POST http://localhost:8080/api/listas -> devuelve ID 3
+# DELETE http://localhost:8080/api/listas/3
+DELETE http://localhost:8080/api/listas/3
