@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.Lista;
 import com.example.demo.entity.ListaEntity;
+import com.example.demo.entity.UsuarioEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public class ListaRepositoryAdapter implements ListaRepository {
     }
 
     @Override
+    public List<Lista> findByUsuarioId(Long usuarioId) {
+        return listaJpaRepository.findByUsuarioId(usuarioId).stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
+    @Override
     public Optional<Lista> findById(Long id) {
         return listaJpaRepository.findById(id).map(this::toDomain);
     }
@@ -41,10 +49,16 @@ public class ListaRepositoryAdapter implements ListaRepository {
     }
 
     private ListaEntity toEntity(Lista lista) {
-        return new ListaEntity(lista.id(), lista.nombre());
+        UsuarioEntity usuario = null;
+        if (lista.usuarioId() != null) {
+            usuario = new UsuarioEntity();
+            usuario.setId(lista.usuarioId());
+        }
+        return new ListaEntity(lista.id(), lista.nombre(), usuario);
     }
 
     private Lista toDomain(ListaEntity entity) {
-        return new Lista(entity.getId(), entity.getNombre());
+        Long usuarioId = entity.getUsuario() != null ? entity.getUsuario().getId() : null;
+        return new Lista(entity.getId(), entity.getNombre(), usuarioId);
     }
 }

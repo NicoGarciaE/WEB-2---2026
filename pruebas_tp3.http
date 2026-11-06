@@ -1,0 +1,52 @@
+@baseUrl = http://localhost:8080
+@token = REEMPLAZAR_CON_TOKEN_DEL_LOGIN
+
+### 1. Estado del servicio (público — 200 OK)
+GET {{baseUrl}}/health
+
+### 2. Catálogo de productos (público, sin token — 200 OK)
+GET {{baseUrl}}/api/productos?limit=5&skip=0
+
+### 3. Acceso a endpoint protegido SIN token (401 Unauthorized)
+GET {{baseUrl}}/api/listas
+
+### 4. Registro de usuario (público — 201 Created, o 409 Conflict si ya existe)
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{
+  "email": "nico@ejemplo.com",
+  "password": "miPassword123"
+}
+
+### 5. Login válido (200 OK — copiar el campo "token" a @token arriba)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "nico@ejemplo.com",
+  "password": "miPassword123"
+}
+
+### 6. Login inválido (401 Unauthorized)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "nico@ejemplo.com",
+  "password": "passwordIncorrecta"
+}
+
+### 7. Crear lista propia con token válido (201 Created)
+POST {{baseUrl}}/api/listas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Lista personal TP3"
+}
+
+### 8. Listar mis listas con token válido (200 OK)
+GET {{baseUrl}}/api/listas
+Authorization: Bearer {{token}}
+

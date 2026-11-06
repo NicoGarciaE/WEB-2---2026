@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/productos")
-@Tag(name = "productos", description = "Catálogo de productos")
+@Tag(name = "Productos", description = "Catálogo público de productos (solo lectura, no requiere autenticación)")
 public class ProductoController {
 
     private final ProductoService service;
